@@ -4,7 +4,18 @@ const prisma = new PrismaClient();
 
 // Get all post from collection
 export const getPost = async () => {
-  const allPosts = await prisma.post.findMany();
+  const allPosts = await prisma.post.findMany({
+    include: {
+      user: {
+        select: {
+          id: true,
+          name: true,
+          username: true,
+          image: true
+        }
+      }
+    }
+  });
   return allPosts;
 };
 
@@ -14,7 +25,7 @@ export const createPost  = async (data: {
     image: string,
     userId: number
 }) => {
-    const { content, image, userId} = data;
+    const { content, image, userId } = data;
 
     const allPosts  = await prisma.post.create({
         data: {
@@ -32,7 +43,23 @@ export const getPostById = async (data: { id: number }) => {
   // Find id in database
   const post = await prisma.post.findUnique({
     where: { id : Number(id) },
+    include: {
+      user: {
+        select: {
+          id: true,
+          name: true,
+          username: true,
+          image: true
+        }
+      }
+    }
   });
   return post;
+}
+
+// Delete post
+export const deletePost = async (data: {id: number})=>{
+  const { id } = data;
+  await prisma.post.delete({ where: { id: Number(id) } });
 }
 

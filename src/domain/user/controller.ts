@@ -13,7 +13,8 @@ export const getUserById = async (data: { id: number }) => {
   const { id } = data; // Get id of user 
   // Find id in database
   const user = await prisma.user.findUnique({
-    where: { id : Number(id) },
+    where: { id : Number(id), },
+    include: { posts : true }
   });
   return user;
 }

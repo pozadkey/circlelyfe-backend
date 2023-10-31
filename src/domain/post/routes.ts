@@ -1,5 +1,5 @@
 import { Router, Request, Response } from 'express';
-import {createPost, getPost, getPostById} from './controller';
+import {createPost, deletePost, getPost, getPostById} from './controller';
 
 const postRouter: Router = Router();
 
@@ -40,6 +40,18 @@ postRouter.get('/:id', async (req: Request, res: Response) => {
   }
 });
 
+// Delete user
+postRouter.delete('/:id', async (req: Request, res: Response) => {
+  try {
+    const { id } = req.params;
+     await deletePost({id : Number(id) });
+    res.status(202).json({
+      message: `Post deleted.`,
+   });
+  } catch (error) {
+    res.status(400).json({ error: 'Failed to delete post' });
+  }
+});
 
 
 export default postRouter;
