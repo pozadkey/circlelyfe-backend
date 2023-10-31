@@ -1,5 +1,9 @@
-import express, { Request, Response, Router } from 'express';
-const router: Router = express.Router();
+import { Request, Response, Router } from 'express';
+import userRouter from '../domain/user/routes';
+const router: Router = Router();
+
+// Routes
+router.use('/user', userRouter);
 
 // HomePage
 router.get('/', (req: Request, res: Response) => {
@@ -22,4 +26,3 @@ router.get('*', (req: Request, res: Response) => {
 });
 
 export default router;
-  
