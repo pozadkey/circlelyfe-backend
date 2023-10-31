@@ -4,8 +4,8 @@ const prisma = new PrismaClient();
 
 // Get all users from collection
 export const getUser = async () => {
-  const allUser = await prisma.user.findMany();
-  return allUser;
+  const allUsers = await prisma.user.findMany();
+  return allUsers;
 };
 
 // Get single user by id

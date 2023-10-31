@@ -1,9 +1,11 @@
 import { Request, Response, Router } from 'express';
 import userRouter from '../domain/user/routes';
+import postRouter from '../domain/post/routes';
 const router: Router = Router();
 
 // Routes
 router.use('/user', userRouter);
+router.use('/post', postRouter);
 
 // HomePage
 router.get('/', (req: Request, res: Response) => {

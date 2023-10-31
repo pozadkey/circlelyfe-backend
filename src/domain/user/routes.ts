@@ -1,4 +1,3 @@
-// userRoutes.ts
 import { Router, Request, Response } from 'express';
 import { createUser, deleteUser, editUser, getUser, getUserById } from './controller';
 
@@ -18,8 +17,8 @@ userRouter.get('/', async (req: Request, res: Response) => {
 userRouter.get('/:id', async (req: Request, res: Response) => {
   try {
     const { id } = req.params;
-    const userId = await getUserById({id : Number(id) });
-    res.json(userId);
+    const user = await getUserById({id : Number(id) });
+    res.json(user);
   } catch (error) {
     res.status(500).json({ error: 'An error occurred' });
   }
