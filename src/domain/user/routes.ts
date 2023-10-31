@@ -1,6 +1,6 @@
 // userRoutes.ts
 import { Router, Request, Response } from 'express';
-import { createUser, editUser, getUser, getUserById } from './controller';
+import { createUser, deleteUser, editUser, getUser, getUserById } from './controller';
 
 const userRouter: Router = Router();
 
@@ -61,5 +61,17 @@ userRouter.put('/:id', async (req: Request, res: Response) => {
   }
 });
 
+// Delete user
+userRouter.delete('/:id', async (req: Request, res: Response) => {
+  try {
+    const { id } = req.params;
+     await deleteUser({id : Number(id) });
+    res.status(202).json({
+      message: `User deleted.`,
+   });
+  } catch (error) {
+    res.status(400).json({ error: 'Failed to delete user' });
+  }
+});
 
 export default userRouter;
