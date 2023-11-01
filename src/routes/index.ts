@@ -1,11 +1,15 @@
 import { Request, Response, Router } from 'express';
 import userRouter from '../domain/user/routes';
 import postRouter from '../domain/post/routes';
+import loginRouter from '../auth/login/routes';
 const router: Router = Router();
 
 // Routes
 router.use('/user', userRouter);
 router.use('/post', postRouter);
+
+// Auth Routes
+router.use('/login', loginRouter);
 
 // HomePage
 router.get('/', (req: Request, res: Response) => {
