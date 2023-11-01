@@ -16,13 +16,21 @@ postRouter.get('/', async (req: Request, res: Response) => {
 // Create new post
 postRouter.post('/', async (req: Request, res: Response) => {
   try {
-    const {content, image, userId } = req.body; // Get post data from user
+    const { content, image } = req.body; // Get post data from the user
+     // @ts-ignore
+    const user = req.user;
+    
+    if (!user) {
+      return res.status(401).json({ error: 'User not authenticated' });
+    }
+
     const newPost = await createPost({
-      content, 
+      content,
       image,
-      userId,
+      userId: user.id, // Use user.id to specify the user for the post
     });
-    res.json(newPost); // Return data in json
+
+    res.json(newPost); // Return data in JSON
   } catch (error) {
     res.status(400).json({ error: 'Unable to create post' });
   }
@@ -49,7 +57,7 @@ postRouter.delete('/:id', async (req: Request, res: Response) => {
       message: `Post deleted.`,
    });
   } catch (error) {
-    res.status(400).json({ error: 'Failed to delete post' });
+    res.status(400).json({ error: 'Failed to delete user' });
   }
 });
 

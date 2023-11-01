@@ -31,7 +31,7 @@ export const createPost  = async (data: {
         data: {
             content,
             image,
-            userId,
+            userId
           },
     });
     return allPosts;
@@ -43,7 +43,7 @@ export const getPostById = async (data: { id: number }) => {
   // Find id in database
   const post = await prisma.post.findUnique({
     where: { id : Number(id) },
-    include: {
+     include: {
       user: {
         select: {
           id: true,

@@ -92,8 +92,8 @@ export const verifyUser = async (data: {
       });
     
       // Generate the JWT token
-      const authToken = generateAuthToken(apiToken.id, JWT_SECRET as string);
+     const authToken = await generateAuthToken(apiToken.id, JWT_SECRET as string);
 
-      return apiToken;
+      return authToken;
   
 };

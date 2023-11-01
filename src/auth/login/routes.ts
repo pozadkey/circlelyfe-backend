@@ -25,12 +25,12 @@ loginRouter.post('/', async (req: Request, res: Response) => {
     try {
       const { email, emailToken } = req.body;
 
-      await verifyUser({
+      const verifiedUser = await verifyUser({
         email,
         emailToken
       })
 
-      res.sendStatus(200);
+      res.json(verifiedUser); 
 
     } catch (error) {
         res.status(400).json({

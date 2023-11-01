@@ -2,11 +2,12 @@ import { Request, Response, Router } from 'express';
 import userRouter from '../domain/user/routes';
 import postRouter from '../domain/post/routes';
 import loginRouter from '../auth/login/routes';
+import { authToken } from '../middlewares/auth';
 const router: Router = Router();
 
 // Routes
-router.use('/user', userRouter);
-router.use('/post', postRouter);
+router.use('/user', authToken, userRouter);
+router.use('/post', authToken, postRouter);
 
 // Auth Routes
 router.use('/login', loginRouter);
