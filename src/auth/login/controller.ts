@@ -63,6 +63,9 @@ export const loginUser = async (data: { email: string }) => {
         throw Error(`Unable to send code`);
       }
 
+      console.log(createdToken.emailToken);
+      
+
       return createdToken;
 };
 
@@ -115,8 +118,39 @@ export const verifyUser = async (data: {
     
       // Generate the JWT token
      const authToken = await generateAuthToken(apiToken.id, JWT_SECRET as string);
+
+     // Update authToken in database
+     await prisma.token.update({
+      where: {id: dbEmailToken.id },
+      data: { authToken: authToken  },
+    });
      
      return authToken;
-
 };
+
+
+// Logout user
+export const logoutUser = async (data: { authToken: string }) => {
+  const { authToken } = data;
+
+  // Find the API token associated with the provided authToken
+  const apiToken = await prisma.token.findUnique({
+    where: {
+      authToken: authToken
+    },
+  });
+
+  if (!apiToken) {
+    throw new Error('Invalid authentication token.');
+  }
+
+  // Invalidate the API token (log out the user)
+  const logOut = await prisma.token.update({
+    where: { authToken: authToken },
+    data: { valid: false },
+  });
+
+  return logOut;
+};
+
 

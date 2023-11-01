@@ -1,7 +1,7 @@
 import { Request, Response, Router } from 'express';
 import userRouter from '../domains/user/routes';
 import postRouter from '../domains/post/routes';
-import loginRouter from '../auth/login/routes';
+import authRouter from '../auth/login/routes';
 import { authToken } from '../middlewares/auth';
 const router: Router = Router();
 
@@ -10,7 +10,7 @@ router.use('/user', authToken, userRouter);
 router.use('/post', authToken, postRouter);
 
 // Auth Routes
-router.use('/login', loginRouter);
+router.use('/', authRouter);
 
 // HomePage
 router.get('/', (req: Request, res: Response) => {

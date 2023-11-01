@@ -35,6 +35,7 @@ model Token {
 
   type String // Email or API
   emailToken String? @unique
+  authToken String? @unique
 
   valid Boolean @default(true)
   expiration DateTime
