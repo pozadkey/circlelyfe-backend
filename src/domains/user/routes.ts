@@ -8,8 +8,10 @@ userRouter.get('/', async (req: Request, res: Response) => {
   try {
     const users = await getUser();
     res.json(users);
-  } catch (error) {
-    res.status(500).json({ error: 'An error occurred' });
+  } catch (error: any ) {
+     res.status(400).json({
+      error: error.message
+    });
   }
 });
 
@@ -19,8 +21,10 @@ userRouter.get('/:id', async (req: Request, res: Response) => {
     const { id } = req.params;
     const user = await getUserById({id : Number(id) });
     res.json(user);
-  } catch (error) {
-    res.status(500).json({ error: 'An error occurred' });
+  } catch (error: any ) {
+     res.status(400).json({
+        error: error.message
+    });
   }
 });
 
@@ -35,8 +39,10 @@ userRouter.post('/', async (req: Request, res: Response) => {
       bio
     });
     res.json(newUser);
-  } catch (error) {
-    res.status(400).json({ error: 'Username and email should be unique' });
+  } catch (error: any ) {
+    res.status(400).json({
+      error: error.message
+  });
   }
 });
 
@@ -55,8 +61,10 @@ userRouter.put('/:id', async (req: Request, res: Response) => {
     });
 
     res.json(editedUser);
-  } catch (error) {
-    res.status(400).json({ error: 'Failed to update user' });
+  } catch (error: any ) {
+    res.status(400).json({
+      error: error.message
+  });
   }
 });
 
@@ -68,8 +76,10 @@ userRouter.delete('/:id', async (req: Request, res: Response) => {
     res.status(202).json({
       message: `User deleted.`,
    });
-  } catch (error) {
-    res.status(400).json({ error: 'Failed to delete user' });
+  } catch (error: any ) {
+    res.status(400).json({
+      error: error.message
+  });
   }
 });
 

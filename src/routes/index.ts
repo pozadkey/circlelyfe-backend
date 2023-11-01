@@ -1,6 +1,6 @@
 import { Request, Response, Router } from 'express';
-import userRouter from '../domain/user/routes';
-import postRouter from '../domain/post/routes';
+import userRouter from '../domains/user/routes';
+import postRouter from '../domains/post/routes';
 import loginRouter from '../auth/login/routes';
 import { authToken } from '../middlewares/auth';
 const router: Router = Router();

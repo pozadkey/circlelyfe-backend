@@ -39,8 +39,8 @@ export const createUser = async (data: {
     });
 
    return result;
-  } catch (e) {
-     throw e;
+  } catch (e: any) {
+     throw e.message;
   } 
 }
 
@@ -64,13 +64,17 @@ export const editUser = async (
       data: { bio, name, image },
     });
    return result;
-  } catch (e) {
-    throw e;
+  } catch (e: any ) {
+    throw e.message;
   }
 }
 
 // Delete user
 export const deleteUser = async (data: {id: number})=>{
-  const { id } = data;
-  await prisma.user.delete({ where: { id: Number(id) } });
+  try {
+    const { id } = data;
+    await prisma.user.delete({ where: { id: Number(id) } });
+  } catch (e: any ){
+    throw e.message;
+  }
 }

@@ -8,8 +8,10 @@ postRouter.get('/', async (req: Request, res: Response) => {
   try {
     const posts = await getPost();
     res.json(posts);
-  } catch (error) {
-    res.status(500).json({ error: 'An error occurred' });
+  } catch (error: any) {
+    res.status(400).json({
+      error: error.message
+  });
   }
 });
 
@@ -31,8 +33,10 @@ postRouter.post('/', async (req: Request, res: Response) => {
     });
 
     res.json(newPost); // Return data in JSON
-  } catch (error) {
-    res.status(400).json({ error: 'Unable to create post' });
+  } catch (error: any) {
+    res.status(400).json({
+      error: error.message
+  });
   }
 });
 
@@ -43,8 +47,10 @@ postRouter.get('/:id', async (req: Request, res: Response) => {
     const post = await getPostById({id : Number(id) });
     if(!post) return res.status(404).json({ error: 'Post not found!' })
     res.json(post);
-  } catch (error) {
-    res.status(500).json({ error: 'An error occurred' });
+  } catch (error: any) {
+    res.status(400).json({
+      error: error.message
+  });
   }
 });
 
@@ -56,8 +62,10 @@ postRouter.delete('/:id', async (req: Request, res: Response) => {
     res.status(202).json({
       message: `Post deleted.`,
    });
-  } catch (error) {
-    res.status(400).json({ error: 'Failed to delete user' });
+  } catch (error: any) {
+    res.status(400).json({
+      error: error.message
+  });
   }
 });
 

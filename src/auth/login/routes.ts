@@ -13,10 +13,14 @@ loginRouter.post('/', async (req: Request, res: Response) => {
         email
       })
 
-      res.sendStatus(200);
+      res.status(201).json({
+        message: `A verification code has been sent to ${email}. Check your inbox.`
+    });
 
-    } catch (error) {
-      res.status(500).json({ error: 'An error occurred' });
+    } catch (error: any ) {
+      res.status(400).json({
+        error: error.message
+    });
     }
   });
 
@@ -30,11 +34,14 @@ loginRouter.post('/', async (req: Request, res: Response) => {
         emailToken
       })
 
-      res.json(verifiedUser); 
+      res.status(201).json({
+        message: `Welcome Circlelyfe`,
+        token: verifiedUser
+    });
 
-    } catch (error) {
+    } catch (error: any) {
         res.status(400).json({
-            message: error
+          error: error.message
         });
     }
   });

@@ -1,5 +1,6 @@
 import { PrismaClient } from '@prisma/client';
 import { generateAuthToken, generateEmailToken } from '../../utils/generate_token';
+import { sendEmail } from '../../utils/send_email';
 
 const prisma = new PrismaClient();
 
@@ -13,7 +14,7 @@ const JWT_SECRET = process.env.JWT_SECRET;
 
 // Create user, if it  doesn't exist
 // Generate emailToken and send to user's email
-export const loginUser = async (data: { email: string}) => {
+export const loginUser = async (data: { email: string }) => {
     const { email } = data;
 
     // Generate token
@@ -38,8 +39,29 @@ export const loginUser = async (data: { email: string}) => {
           },
         },
       });
+      
+      // Email variable
+      const authEmail = process.env.AUTH_EMAIL;
 
-      console.log(createdToken);
+      // Check if  if authEmail is not undefined
+      if (authEmail){
+        const emailOptions = {
+          from: authEmail,
+          to: email,
+          subject: 'Please verify your email',
+          html: `<h3> Verify your account </h3><p>Verification code: <b>${ createdToken.emailToken }</b></p><p>(This code is valid for 10 minutes>)</p>`
+        };
+
+        // Send emailToken to the user
+        try {
+          sendEmail(emailOptions);
+          console.log('Email sent successfully.');
+        } catch (error: any) {
+          throw(`Unable to send code: ${error.message}`);
+        }
+      } else {
+        throw Error(`Unable to send code`);
+      }
 
       return createdToken;
 };
@@ -49,7 +71,7 @@ export const verifyUser = async (data: {
     email: string,
     emailToken: string
 }) => {
-    const { email, emailToken } = data; //
+    const { email, emailToken } = data; 
 
     const dbEmailToken = await prisma.token.findUnique({
         where: {
@@ -93,7 +115,8 @@ export const verifyUser = async (data: {
     
       // Generate the JWT token
      const authToken = await generateAuthToken(apiToken.id, JWT_SECRET as string);
+     
+     return authToken;
 
-      return authToken;
-  
 };
+

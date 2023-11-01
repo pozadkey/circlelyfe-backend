@@ -21,15 +21,16 @@ export const  authToken =  async (
 
   // Check if jwtToken exists or is valid
   if (!jwtToken) {
-    return res.sendStatus(401); // Unauthorized
+    return res.status(401).json({ error: 'Unauthorized access. Please login or create an account' });  // Unauthorised access
   }
 
   try {
     // Verify jwt Toen
     const payload = verifyToken(jwtToken, JWT_SECRET as string);
 
-    if (!payload)  return res.sendStatus(401); // Unauthorized 
+    if (!payload) return res.status(401).json({ error: 'Unauthorized access. Please login or create an account' });  // Unauthorised access
 
+     // Find token in the database
     const dbToken = await prisma.token.findUnique({
       where: { id: payload.tokenId },
       include: { user: true },
@@ -37,12 +38,12 @@ export const  authToken =  async (
 
     // Check if the token valid or not expired
     if (!dbToken || !dbToken.valid || dbToken.expiration < new Date())
-    return res.status(401).json({ error: 'API token expired or invalid' });
+    return res.status(401).json({ error: 'API token expired or invalid' }); // Token is invalid or expired
  
     req.user = dbToken.user;
     next();
-  } catch (error) {
-    return res.sendStatus(401); // Unauthorized
+  } catch (error: any) {
+    return res.status(401).json({ error: error.message });
   }
 }
 
