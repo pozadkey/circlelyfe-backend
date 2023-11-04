@@ -50,8 +50,8 @@ loginRouter.post('/login', async (req: Request, res: Response) => {
     loginRouter.post('/logout', async (req: Request, res: Response) => {
       try {
         const { authToken } = req.body;
-  
-        const loggedOutUser = await logoutUser({
+        
+        await logoutUser({
           authToken
         })
   

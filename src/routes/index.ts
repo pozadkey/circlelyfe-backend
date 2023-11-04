@@ -10,7 +10,7 @@ router.use('/user', authToken, userRouter);
 router.use('/post', authToken, postRouter);
 
 // Auth Routes
-router.use('/', authRouter);
+router.use('/account', authRouter);
 
 // HomePage
 router.get('/', (req: Request, res: Response) => {

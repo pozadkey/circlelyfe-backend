@@ -4,7 +4,7 @@ import {createPost, deletePost, getPost, getPostById} from './controller';
 const postRouter: Router = Router();
 
 // Get all users
-postRouter.get('/', async (req: Request, res: Response) => {
+postRouter.get('/create-post', async (req: Request, res: Response) => {
   try {
     const posts = await getPost();
     res.json(posts);
@@ -41,7 +41,7 @@ postRouter.post('/', async (req: Request, res: Response) => {
 });
 
 // Get a single post
-postRouter.get('/:id', async (req: Request, res: Response) => {
+postRouter.get('view/:id', async (req: Request, res: Response) => {
   try {
     const { id } = req.params;
     const post = await getPostById({id : Number(id) });
@@ -55,7 +55,7 @@ postRouter.get('/:id', async (req: Request, res: Response) => {
 });
 
 // Delete user
-postRouter.delete('/:id', async (req: Request, res: Response) => {
+postRouter.delete('delete/:id', async (req: Request, res: Response) => {
   try {
     const { id } = req.params;
      await deletePost({id : Number(id) });
